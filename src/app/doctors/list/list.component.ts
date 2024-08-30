@@ -16,7 +16,7 @@ export class DoctorsListComponent implements OnInit {
 
   isLoading = false;
 
-  limit = 24;
+  limit = 10;
   offset = 0;
 
   hasMore = true;
@@ -107,9 +107,9 @@ export class DoctorsListComponent implements OnInit {
       const offsetTop = this.viewport.elementRef.nativeElement.scrollTop;
       const totalHeight = this.viewport.elementRef.nativeElement.scrollHeight;
       const clientHeight = this.viewport.elementRef.nativeElement.clientHeight;
-      // adding a buffer of 200 pixels when user is about to go down to bottom
+      // adding a buffer of 300 pixels when user is about to go down to bottom
       if (
-        offsetTop + clientHeight >= totalHeight - 200 &&
+        offsetTop + clientHeight >= totalHeight - 300 &&
         !this.isLoading &&
         this.hasMore
       ) {
