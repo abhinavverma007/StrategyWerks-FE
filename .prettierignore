@@ -1,0 +1,7 @@
+dist
+*.json
+coverage
+vendor
+apps/project-mgmt/src/assets/
+syncfusion
+sonar-scanner-*/**

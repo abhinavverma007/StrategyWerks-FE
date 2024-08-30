@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="header" role="banner" fxLayout.xs="column">
+    <h2 tabindex="0">Doctors List</h2>
+    <div class="display">Displaying {{ offset }} of {{ count }} doctors</div>
+  </div>
+
+  <cdk-virtual-scroll-viewport
+    class="doctor-list"
+    itemSize="200"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxLayoutGap="16px"
+    role="list"
+    (scrolledIndexChange)="onScroll()"
+    #viewport
+  >
+    <div
+      *cdkVirtualFor="let doctor of doctors; trackBy: trackById"
+      class="doctor-card"
+      role="listitem"
+      tabindex="0"
+    >
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ doctor.name }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+          <p><strong>Phone:</strong> {{ doctor.phoneNumber }}</p>
+          <p><strong>Location:</strong> {{ doctor.location }}</p>
+          <p><strong>Rating:</strong> {{ doctor.rating }}</p>
+          <p>
+            <strong>Consultation Fee:</strong>
+            {{ doctor.consultationFee | currency }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </cdk-virtual-scroll-viewport>
+
+  <div *ngIf="isLoading" class="loading" role="status">
+    <mat-spinner [diameter]="20"> </mat-spinner>
+    <span class="text">Loading...</span>
+  </div>
+  <div *ngIf="!hasMore && !isLoading" class="no-more" role="alert">
+    <span class="text">No more doctors</span>
+  </div>
+</div>

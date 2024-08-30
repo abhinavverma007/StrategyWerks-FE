@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Angular cache
+.angular/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Coverage
+coverage/
+
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+test_suite_analysis/
+managed_context/
