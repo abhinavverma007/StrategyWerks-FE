@@ -106,5 +106,12 @@
 
   .doctor-list {
     width: 90vw !important;
+    height: 75vh !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .doctor-list {
+    height: 80vh !important;
   }
 }

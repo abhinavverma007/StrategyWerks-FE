@@ -2,26 +2,35 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
 
-## Development server
+## Description and features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Problem statement: The task was to implement infinite scrolling(in angular or react) with a backend server which supporting filtering and pagination (of user's choice).
 
-## Code scaffolding
+1. The opening page shows multiple cards present in list form.
+2. 10,000 items are to be presented with dynamic data loading.
+3. Responsive design for Laptop,Ipad,Mobile screens. (All screens)
+4. Documentation added in methods in component.
+5. Test cases added and keyboard accessbility with tabIndex and screen reader accessibility with aria roles
+   provided.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Pre-requisites
 
-## Build
+1. You must have node in your system.
+2. You must have nvm(node version manager) installed.
+   We are using node version 16.16.0.
+   After installing nvm, you can type `nvm install 16.16.0` to install this version
+   Then type `nvm use 16.16.0`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Steps to run the application
 
-## Running unit tests
+1. Run `npm install` in terminal
+2. Make `.env` file at root level ( parallel to package.json)
+3. Add the `API_URL` (eg: API_URL=http://localhost:3000) in your `.env` file. It is URL of your backend server.
+4. Now run `npm run start` in terminal
+5. After successful, compilation, go to http://localhost:4200
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Steps to test/check code coverage the application
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. Run `npm run test` in terminal
+2. `coverage` folder will be generated at root level. You can check
+   from there by opening `index.html` file present in there.
