@@ -2,17 +2,16 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {forkJoin, Subscription} from 'rxjs';
 
-import {Doctor} from '../models/doctor.model';
-import {DoctorService} from '../service/doctor.service';
+import {Movies} from '../models/movies.model';
+import {MoviesService} from '../service/movies.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class DoctorsListComponent implements OnInit {
-  doctors: Doctor[] = [];
-  visibleDoctors: Doctor[] = [];
+export class MoviesListComponent implements OnInit {
+  movies: Movies[] = [];
 
   isLoading = false;
 
@@ -27,27 +26,27 @@ export class DoctorsListComponent implements OnInit {
 
   @ViewChild('viewport') viewport: CdkVirtualScrollViewport | undefined;
 
-  constructor(private doctorFacadeService: DoctorService) {}
+  constructor(private moviesService: MoviesService) {}
 
   ngOnInit(): void {
-    this.loadInitialDoctors();
+    this.loadInitialMovies();
   }
 
   /**
-   * The `loadDoctors` function fetches doctors from a service,
-   * updates the list of doctors, and manages
+   * The `loadMoives` function fetches movies from a service,
+   * updates the list of movies, and manages
    * loading state.
    */
-  loadDoctors() {
+  loadMovies() {
     this.isLoading = true;
-    const getDoctorSub = this.doctorFacadeService
-      .getDoctors(this.limit, this.offset)
+    const getMovieSub = this.moviesService
+      .getMovies(this.limit, this.offset)
       .subscribe({
-        next: (data: Doctor[]) => {
+        next: (data: Movies[]) => {
           if (data.length < this.limit) {
             this.hasMore = false;
           }
-          this.doctors = [...this.doctors, ...data];
+          this.movies = [...this.movies, ...data];
           this.offset += this.limit;
           this.isLoading = false;
         },
@@ -56,21 +55,21 @@ export class DoctorsListComponent implements OnInit {
         },
       });
 
-    this.subscription.push(getDoctorSub);
+    this.subscription.push(getMovieSub);
   }
 
   /**
-   * The `loadInitialDoctors` function loads a set of doctors and their
+   * The `loadInitialMovies` function loads a set of movies and their
    * count while managing loading state.
    */
-  loadInitialDoctors() {
+  loadInitialMovies() {
     this.isLoading = true;
     const forkedSub = forkJoin([
-      this.doctorFacadeService.getDoctors(this.limit, this.offset),
-      this.doctorFacadeService.getDoctorCount(),
+      this.moviesService.getMovies(this.limit, this.offset),
+      this.moviesService.getMoviesCount(),
     ]).subscribe({
-      next: ([doctorSet, totalCount]) => {
-        this.doctors = [...this.doctors, ...doctorSet];
+      next: ([movieSet, totalCount]) => {
+        this.movies = [...this.movies, ...movieSet];
         this.count = totalCount.count;
         this.offset += this.limit;
 
@@ -85,16 +84,16 @@ export class DoctorsListComponent implements OnInit {
   }
 
   /**
-   * The trackById function returns the id of a Doctor item based on its index.
+   * The trackById function returns the id of a Movie item based on its index.
    * @param {number} index - The `index` parameter in the `trackById` function represents the index of
    * the item in the collection that Angular is tracking. It is a number that indicates the position of
    * the item within the collection.
-   * @param {Doctor} item - The `item` parameter in the `trackById` function represents an object of
-   * type `Doctor`.
-   * @returns The function `trackById` is returning the `id` property of the `Doctor` object at the
+   * @param {Movie} item - The `item` parameter in the `trackById` function represents an object of
+   * type `Movie`.
+   * @returns The function `trackById` is returning the `id` property of the `Movie` object at the
    * specified index in the array.
    */
-  trackById(index: number, item: Doctor) {
+  trackById(index: number, item: Movies) {
     return item.id;
   }
 
@@ -113,7 +112,7 @@ export class DoctorsListComponent implements OnInit {
         !this.isLoading &&
         this.hasMore
       ) {
-        this.loadDoctors();
+        this.loadMovies();
       }
     }
   }

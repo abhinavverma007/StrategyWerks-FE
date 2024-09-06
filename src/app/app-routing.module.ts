@@ -3,12 +3,12 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'doctors',
+    path: 'movies',
     loadChildren: () =>
-      import('./doctors/doctors.module').then(m => m.DoctorsModule),
+      import('./movies/movies.module').then(m => m.MoviesModule),
   },
-  {path: '', redirectTo: '/doctors', pathMatch: 'full'},
-  {path: '**', redirectTo: '/doctors'}, // Wildcard route for a 404 page or default route
+  {path: '', redirectTo: '/movies', pathMatch: 'full'},
+  {path: '**', redirectTo: '/movies'}, // Wildcard route for a 404 page or default route
 ];
 
 @NgModule({

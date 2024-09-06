@@ -49,14 +49,14 @@
     }
   }
 
-  .doctor-list {
+  .movie-list {
     padding: 20px;
     height: 86vh;
     width: 95vw;
     overflow-y: scroll;
     margin-left: 20px;
 
-    .doctor-card {
+    .movie-card {
       margin-bottom: 16px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -104,14 +104,14 @@
     font-size: 16px !important;
   }
 
-  .doctor-list {
+  .movie-list {
     width: 90vw !important;
     height: 70vh !important;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  .doctor-list {
+  .movie-list {
     height: 80vh !important;
   }
 }

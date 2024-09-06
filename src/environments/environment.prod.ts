@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: '',
-};
+  production: false,
+  apiUrl: "https://strategy-werks-be-mongo.vercel.app"
+}

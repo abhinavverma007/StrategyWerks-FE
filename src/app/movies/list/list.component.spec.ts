@@ -8,51 +8,57 @@ import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {By} from '@angular/platform-browser';
 
-import {Doctor} from '../models/doctor.model';
-import {DoctorService} from '../service/doctor.service';
-import {DoctorsListComponent} from './list.component';
+import {Movies} from '../models/movies.model';
+import {MoviesService} from '../service/movies.service';
+import {MoviesListComponent} from './list.component';
 import {of, throwError} from 'rxjs';
 import {Count} from '../models/count.model';
 
 describe('ListComponent', () => {
-  let component: DoctorsListComponent;
-  let fixture: ComponentFixture<DoctorsListComponent>;
-  let doctorServiceSpy: jasmine.SpyObj<DoctorService>;
+  let component: MoviesListComponent;
+  let fixture: ComponentFixture<MoviesListComponent>;
+  let moviesServiceSpy: jasmine.SpyObj<MoviesService>;
 
   let viewportMock: CdkVirtualScrollViewport;
 
-  const mockDoctors = [
+  const mockmovies = [
     {
-      consultationFee: 500,
-      location: 'Dee',
-      name: 'fff',
-      phoneNumber: '4334343',
-      rating: 4,
-      specialization: 'cardio',
-      id: '937070a3-25e2-4878-b1da-cc138b5288f1',
+imdb: {
+  rating: 5
+},
+title: 'ff',
+year: 3331,
+  runtime: 250,
+  genres: ['D','F','G'],
+  awards: {
+    text: '2 win'
+  }
     },
     {
-      consultationFee: 600,
-      location: 'gis',
-      name: 'ppwq',
-      phoneNumber: '23323',
-      rating: 5,
-      specialization: 'neuro',
-      id: '4bfbf692-65c8-42fc-8e34-175eee703532',
+      imdb: {
+        rating: 6
+      },
+      title: 'ffff',
+      year: 3332,
+        runtime: 150,
+        genres: ['D1','F1','G1'],
+        awards: {
+          text: '12 win'
+        }
     },
-  ] as Doctor[];
+  ] as Movies[];
 
   beforeEach(async () => {
-    doctorServiceSpy = jasmine.createSpyObj('DoctorService', [
-      'getDoctorCount',
-      'getDoctors',
+    moviesServiceSpy = jasmine.createSpyObj('movieservice', [
+      'getMoviesCount',
+      'getMovies',
     ]);
     await TestBed.configureTestingModule({
-      declarations: [DoctorsListComponent],
+      declarations: [MoviesListComponent],
       providers: [
         {
-          provide: DoctorService,
-          useValue: doctorServiceSpy,
+          provide: MoviesService,
+          useValue: moviesServiceSpy,
         },
         {
           provide: CdkVirtualScrollViewport,
@@ -79,7 +85,7 @@ describe('ListComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DoctorsListComponent);
+    fixture = TestBed.createComponent(MoviesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -107,30 +113,30 @@ describe('ListComponent', () => {
     expect(loadingElement).toBeFalsy();
   });
 
-  it('should display a card of doctors when loaded', () => {
+  it('should display a card of movies when loaded', () => {
     component.isLoading = false;
-    component.doctors = mockDoctors;
+    component.movies = mockmovies;
     fixture.detectChanges();
-    const doctorCards = fixture.debugElement.query(By.css('.doctor-card'));
-    expect(doctorCards).toBeTruthy();
-    expect(doctorCards.parent?.children.length).toEqual(2);
+    const movieCards = fixture.debugElement.query(By.css('.doctor-card'));
+    expect(movieCards).toBeTruthy();
+    expect(movieCards.parent?.children.length).toEqual(2);
   });
 
-  it('should call loadDoctors when scrolled to the bottom', () => {
+  it('should call loadMovies when scrolled to the bottom', () => {
     // Arrange
-    spyOn(component, 'loadDoctors');
+    spyOn(component, 'loadMovies');
     viewportMock.elementRef.nativeElement.scrollTop = 800; // Simulate scroll position
 
     // Act
     component.onScroll();
 
     // Assert
-    expect(component.loadDoctors).toHaveBeenCalled();
+    expect(component.loadMovies).toHaveBeenCalled();
   });
 
-  it('should not call loadDoctors when already loading', () => {
+  it('should not call loadMovies when already loading', () => {
     // Arrange
-    spyOn(component, 'loadDoctors');
+    spyOn(component, 'loadMovies');
     component.isLoading = true; // Simulate loading state
     viewportMock.elementRef.nativeElement.scrollTop = 800; // Simulate scroll position
 
@@ -138,75 +144,75 @@ describe('ListComponent', () => {
     component.onScroll();
 
     // Assert
-    expect(component.loadDoctors).not.toHaveBeenCalled();
+    expect(component.loadMovies).not.toHaveBeenCalled();
   });
 
-  it('should not call loadDoctors when there are no more doctors', () => {
-    spyOn(component, 'loadDoctors');
+  it('should not call loadMovies when there are no more movies', () => {
+    spyOn(component, 'loadMovies');
     component.hasMore = false;
     viewportMock.elementRef.nativeElement.scrollTop = 800;
 
     component.onScroll();
 
-    expect(component.loadDoctors).not.toHaveBeenCalled();
+    expect(component.loadMovies).not.toHaveBeenCalled();
   });
 
-  it('should load doctors successfully when the number of doctors is equal to the limit', () => {
-    doctorServiceSpy.getDoctors.and.returnValue(of(mockDoctors));
-    component.limit = 2; // Set limit to match the number of mock doctors
+  it('should load movies successfully when the number of movies is equal to the limit', () => {
+    moviesServiceSpy.getMovies.and.returnValue(of(mockmovies));
+    component.limit = 2; // Set limit to match the number of mock movies
     component.offset = 0; // Initial offset
 
     // Act
-    component.loadDoctors();
+    component.loadMovies();
     fixture.detectChanges(); // Trigger change detection
 
     // Assert
-    // expect(doctorServiceSpy.getDoctors).toHaveBeenCalledWith(component.limit, component.offset);
-    expect(component.doctors).toEqual(mockDoctors);
+    // expect(movieserviceSpy.getmovies).toHaveBeenCalledWith(component.limit, component.offset);
+    expect(component.movies).toEqual(mockmovies);
     expect(component.offset).toBe(2); // Offset should be updated
-    expect(component.hasMore).toBeTrue(); // There are more doctors to load
+    expect(component.hasMore).toBeTrue(); // There are more movies to load
     expect(component.isLoading).toBeFalse(); // Loading should be false after data is loaded
   });
 
-  it('should handle error while loading doctors', () => {
-    const errorMessage = 'Error occurred while loading doctors';
-    doctorServiceSpy.getDoctors.and.returnValue(
+  it('should handle error while loading movies', () => {
+    const errorMessage = 'Error occurred while loading movies';
+    moviesServiceSpy.getMovies.and.returnValue(
       throwError(() => new Error(errorMessage)),
     );
     component.limit = 2;
     component.offset = 0;
 
-    component.loadDoctors();
+    component.loadMovies();
 
     expect(component.isLoading).toBeFalse(); // Loading should be false after error
   });
 
-  it('should handle error when getting doctors', () => {
+  it('should handle error when getting movies', () => {
     const mockCount = {count: 42} as Count;
-    doctorServiceSpy.getDoctors.and.returnValue(
-      throwError(() => new Error('Error loading doctors')),
+    moviesServiceSpy.getMovies.and.returnValue(
+      throwError(() => new Error('Error loading movies')),
     );
-    doctorServiceSpy.getDoctorCount.and.returnValue(of(mockCount));
+    moviesServiceSpy.getMoviesCount.and.returnValue(of(mockCount));
     component.limit = 2;
     component.offset = 0;
 
-    component.loadInitialDoctors();
+    component.loadInitialMovies();
 
     // Assert
     expect(component.isLoading).toBeFalse(); // Loading should be false after error
   });
 
-  it('should load initial doctors and count successfully', () => {
+  it('should load initial movies and count successfully', () => {
     const mockCount = {count: 42};
-    doctorServiceSpy.getDoctors.and.returnValue(of(mockDoctors));
-    doctorServiceSpy.getDoctorCount.and.returnValue(of(mockCount));
+    moviesServiceSpy.getMovies.and.returnValue(of(mockmovies));
+    moviesServiceSpy.getMoviesCount.and.returnValue(of(mockCount));
     component.limit = 2;
     component.offset = 0;
 
-    component.loadInitialDoctors();
+    component.loadInitialMovies();
 
-    expect(doctorServiceSpy.getDoctorCount).toHaveBeenCalled();
-    expect(component.doctors).toEqual(mockDoctors);
+    expect(moviesServiceSpy.getMovies).toHaveBeenCalled();
+    expect(component.movies).toEqual(mockmovies);
     expect(component.count).toBe(mockCount.count);
     expect(component.offset).toBe(2);
     expect(component.isLoading).toBeFalse();
